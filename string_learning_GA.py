@@ -1,4 +1,11 @@
 def encode_char(char):
+    """
+    encode_char - function encodes the char into binary number
+    based on position of the char in the global ALPHABET variable
+
+    :param char: char that needs to be encoded
+    :return: list of values for binary representation of the char in the alphabet
+    """ 
     alphabet_list = list(ALPHABET)
     gene = format(alphabet_list.index(char), "b")
     gene = (6-gene.__len__())*"0"+gene
@@ -10,6 +17,13 @@ def encode_char(char):
     return gene_o
 
 def encode_string(string):
+    """
+    encode_string - function encodes the string into list of binary numbers
+    based on position of the char in the global ALPHABET variable
+
+    :param string: string that needs to be encoded
+    :return: list of lists of values for binary representation of every char from the string in the alphabet
+    """ 
     chromosome = []
     for ch in string:
         gene = encode_char(ch)
@@ -17,22 +31,47 @@ def encode_string(string):
     return chromosome
 
 def bits_to_int(bits):
+    """
+    bits_to_int - function changes list of bits into a number
+
+    :param bits: list of binary values
+    :return: integer represented by input binary values
+    """ 
     string_ints = [str(bit) for bit in bits]
     b = ''.join(string_ints)
     i = int(b, 2)
     return i
 
 def decode_gene(gene):
+    """
+    decode_gene - function decodes the gene into a character
+
+    :param gene: list of binary values to be changed into a character
+    :return: decoded character
+    """ 
     number = bits_to_int(gene)
     return ALPHABET[number]
 
 def decode_chromosome(chromosome):
+    """
+    decode_chromosome - function decodes the chromosome into a string of characters
+
+    :param chromosome: list of lists of binary values to be changed into a string of characters
+    :return: decoded string of characters
+    """ 
     decoded = []
     for gene in chromosome:
         decoded.append(decode_gene(gene))
     return ''.join(decoded)
 
 def selection(population):
+    """
+    selection - function selects top chromosomes out of the population
+    based on selection rate (a fraction of the population that should stay)
+
+    :param population: list of chromosomes to choose from
+    :return: selected part of the population
+    """ 
     global SELECTION_RATE
     global POPULATION_SIZE
     number_kept = ceil(SELECTION_RATE*POPULATION_SIZE)
@@ -40,6 +79,14 @@ def selection(population):
     return selected_population
 
 def mate(chromosome1, chromosome2):
+    """
+    mate - function performs mating on the chromosomes,
+    randomly choosing from which chromosome it should take every bit
+
+    :param chromosome1: first parent for mating
+    :param chromosome2: second parent for mating
+    :return: child consisting bits from parents
+    """ 
     child=[]
     for gp1, gp2 in zip(chromosome1, chromosome2):
         prob = random()
@@ -50,6 +97,15 @@ def mate(chromosome1, chromosome2):
     return child
 
 def mutate(pop):
+    """
+    mutate - function performs mutation on the population
+    randomly choosing for every chromosome if it should be mutated
+    and which bit should be mutated, then changing the chosen bit
+    to the opposite one
+
+    :param pop: population that will be mutated
+    :return: mutated population 
+    """ 
     mutated = []
     for ch in pop:
         c = random()
@@ -62,6 +118,12 @@ def mutate(pop):
     return mutated
 
 def create_population():
+    """
+    create_population - function creates new population (list of chromosomes)
+    based on globally specified population size
+
+    :return: created population 
+    """ 
     global TARGET
     global POPULATION_SIZE
     chromosome_len = len(TARGET)
@@ -75,6 +137,13 @@ def create_population():
     return population
 
 def calculate_cost(chromosome):
+    """
+    calculate_cost - function calculates cost for the chromosome
+    by counting how many bits are different than in the target string
+
+    :param chromosome: chromosome (list of bits) to calculate cost from
+    :return: number of wrong bits (cost of the chromosome)
+    """ 
     global ENCODED_TARGET
     flat_target = [item for sublist in ENCODED_TARGET for item in sublist]
     flat_chromosome = [item for sublist in chromosome for item in sublist]
