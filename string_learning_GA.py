@@ -1,12 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# -- Sheet --
-
-# # Binary GA - string learning problem
-# ## Marcelina Suszczyk
-
-
-#Functions used for encoding chromosomes:
 def encode_char(char):
     alphabet_list = list(ALPHABET)
     gene = format(alphabet_list.index(char), "b")
@@ -25,7 +16,6 @@ def encode_string(string):
         chromosome.append(gene)
     return chromosome
 
-#Functions used for decoding:
 def bits_to_int(bits):
     string_ints = [str(bit) for bit in bits]
     b = ''.join(string_ints)
@@ -50,9 +40,7 @@ def selection(population):
     return selected_population
 
 def mate(chromosome1, chromosome2):
-    #prob = randint(0, len(chromosome1)-1)
     child=[]
-    #child = chromosome1[0:prob]+chromosome2[prob:]
     for gp1, gp2 in zip(chromosome1, chromosome2):
         prob = random()
         if prob<0.5:
@@ -153,8 +141,3 @@ def main():
 
 if __name__ == '__main__': 
     main()
-
-# ### References
-# 1. https://www.codespeedy.com/genetic-algorithm-for-machine-learning-in-python/
-
-
